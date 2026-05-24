@@ -1,0 +1,388 @@
+{
+  "part1": {
+    "title": "Demo Part 1: Healthy System (HXDOM1)",
+    "prompt": "Check post-patch status for server HXDOM1",
+    "status": {
+      "label": "HEALTHY",
+      "color": "green",
+      "headline": "\u2705 System Healthy"
+    },
+    "checks": [
+      {
+        "label": "Process",
+        "value": "Running",
+        "icon": "\u2705"
+      },
+      {
+        "label": "Service",
+        "value": "Running",
+        "icon": "\u2705"
+      },
+      {
+        "label": "Config",
+        "value": "xxxxx.com=HXDOM1 found",
+        "icon": "\u2705"
+      },
+      {
+        "label": "Network",
+        "value": "WLAN routing OK (ping+tracert)",
+        "icon": "\u2705"
+      },
+      {
+        "label": "Web",
+        "value": "Auth page reachable",
+        "icon": "\u2705"
+      },
+      {
+        "label": "Logs",
+        "value": "No critical errors detected",
+        "icon": "\u2705"
+      }
+    ],
+    "recommendations": [
+      "Close patch activity for HXDOM1",
+      "No further action required"
+    ],
+    "batch": [
+      {
+        "name": "HXDOM1",
+        "state": "\u2705 Healthy"
+      },
+      {
+        "name": "BOOMI01",
+        "state": "\u26a0\ufe0f Pending"
+      },
+      {
+        "name": "APP02",
+        "state": "\u26a0\ufe0f Pending"
+      },
+      {
+        "name": "DB01",
+        "state": "\u26a0\ufe0f Pending"
+      }
+    ],
+    "toast": null,
+    "activity": [
+      "Running process & service checks\u2026",
+      "Validating config file\u2026",
+      "Checking network path (ping/tracert)\u2026",
+      "Checking web endpoint\u2026",
+      "Summarizing evidence\u2026"
+    ]
+  },
+  "part2": {
+    "title": "Demo Part 2: Service Up but App Broken (BOOMI01)",
+    "prompt": "Check post-patch status for server BOOMI01",
+    "status": {
+      "label": "CRITICAL",
+      "color": "red",
+      "headline": "\u274c Application Failure"
+    },
+    "checks": [
+      {
+        "label": "Process",
+        "value": "Running",
+        "icon": "\u2705"
+      },
+      {
+        "label": "Service",
+        "value": "Running",
+        "icon": "\u2705"
+      },
+      {
+        "label": "Config",
+        "value": "Parameter present",
+        "icon": "\u2705"
+      },
+      {
+        "label": "Network",
+        "value": "Ping OK",
+        "icon": "\u2705"
+      },
+      {
+        "label": "Web",
+        "value": "Endpoint timeout / not reachable",
+        "icon": "\u274c"
+      },
+      {
+        "label": "Logs",
+        "value": "Startup warnings detected",
+        "icon": "\u26a0\ufe0f"
+      }
+    ],
+    "recommendations": [
+      "Restart application layer (not OS) and re-check endpoint",
+      "If not recovered within 30 mins: rollback / escalate to app owner"
+    ],
+    "batch": [
+      {
+        "name": "HXDOM1",
+        "state": "\u2705 Healthy"
+      },
+      {
+        "name": "BOOMI01",
+        "state": "\u274c Critical"
+      },
+      {
+        "name": "APP02",
+        "state": "\u26a0\ufe0f Pending"
+      },
+      {
+        "name": "DB01",
+        "state": "\u26a0\ufe0f Pending"
+      }
+    ],
+    "toast": "\ud83d\udea8 ALERT: BOOMI01 \u2014 Application not responding after patch (Risk: HIGH)",
+    "activity": [
+      "Running process & service checks\u2026",
+      "Validating config\u2026",
+      "Checking web endpoint\u2026",
+      "Detecting timeout\u2026",
+      "Routing alert to #AppSupport\u2026"
+    ]
+  },
+  "part3": {
+    "title": "Demo Part 3: Network Path Validation (APP02)",
+    "prompt": "Validate network path for APP02 (WLAN route to 8.8.8.8)",
+    "status": {
+      "label": "WARNING",
+      "color": "amber",
+      "headline": "\u26a0\ufe0f Network Warning"
+    },
+    "checks": [
+      {
+        "label": "IPConfig",
+        "value": "WLAN interface detected + IP assigned",
+        "icon": "\u2705"
+      },
+      {
+        "label": "Ping",
+        "value": "8.8.8.8 successful",
+        "icon": "\u2705"
+      },
+      {
+        "label": "Tracert",
+        "value": "Route NOT via WLAN",
+        "icon": "\u274c"
+      },
+      {
+        "label": "Impact",
+        "value": "Potential app instability / wrong egress",
+        "icon": "\u26a0\ufe0f"
+      }
+    ],
+    "recommendations": [
+      "Verify routing table and interface priority",
+      "Notify network owner; re-run validation after fix"
+    ],
+    "batch": [
+      {
+        "name": "HXDOM1",
+        "state": "\u2705 Healthy"
+      },
+      {
+        "name": "BOOMI01",
+        "state": "\u274c Critical"
+      },
+      {
+        "name": "APP02",
+        "state": "\u26a0\ufe0f Warning"
+      },
+      {
+        "name": "DB01",
+        "state": "\u26a0\ufe0f Pending"
+      }
+    ],
+    "toast": "\u26a0\ufe0f NOTICE: APP02 \u2014 Traffic route not via WLAN; check interface priority",
+    "activity": [
+      "Running ipconfig\u2026",
+      "Running ping\u2026",
+      "Running tracert\u2026",
+      "Comparing route to expected WLAN egress\u2026",
+      "Preparing network notice\u2026"
+    ]
+  },
+  "part4": {
+    "title": "Demo Part 4: Batch Summary (Parallel)",
+    "prompt": "Show overall patch validation status",
+    "status": {
+      "label": "BATCH",
+      "color": "blue",
+      "headline": "\u2705 Batch Summary"
+    },
+    "checks": [
+      {
+        "label": "Healthy",
+        "value": "HXDOM1, APP03, DB01",
+        "icon": "\u2705"
+      },
+      {
+        "label": "Warning",
+        "value": "APP02 (network route)",
+        "icon": "\u26a0\ufe0f"
+      },
+      {
+        "label": "Critical",
+        "value": "BOOMI01 (app not responding)",
+        "icon": "\u274c"
+      },
+      {
+        "label": "Progress",
+        "value": "75% validated",
+        "icon": "\ud83d\udcca"
+      }
+    ],
+    "recommendations": [
+      "Close healthy systems; focus engineers on BOOMI01 and APP02",
+      "Open incident for BOOMI01 with evidence pack"
+    ],
+    "batch": [
+      {
+        "name": "HXDOM1",
+        "state": "\u2705 Healthy"
+      },
+      {
+        "name": "APP03",
+        "state": "\u2705 Healthy"
+      },
+      {
+        "name": "DB01",
+        "state": "\u2705 Healthy"
+      },
+      {
+        "name": "APP02",
+        "state": "\u26a0\ufe0f Warning"
+      },
+      {
+        "name": "BOOMI01",
+        "state": "\u274c Critical"
+      }
+    ],
+    "toast": null,
+    "activity": [
+      "Aggregating results from parallel checks\u2026",
+      "Grouping by severity\u2026",
+      "Generating batch dashboard\u2026"
+    ]
+  },
+  "part5": {
+    "title": "Demo Part 5: Prompt Notification",
+    "prompt": "Send alert to related parties for BOOMI01",
+    "status": {
+      "label": "ESCALATED",
+      "color": "red",
+      "headline": "\u274c Escalated"
+    },
+    "checks": [
+      {
+        "label": "Issue",
+        "value": "BOOMI01 auth page timeout after patch",
+        "icon": "\u274c"
+      },
+      {
+        "label": "Context",
+        "value": "OS/service running; app not usable",
+        "icon": "\u2139\ufe0f"
+      },
+      {
+        "label": "Impact",
+        "value": "Critical dashboard downtime risk",
+        "icon": "\u26a0\ufe0f"
+      },
+      {
+        "label": "Evidence",
+        "value": "Validation report attached",
+        "icon": "\ud83d\udcce"
+      }
+    ],
+    "recommendations": [
+      "Notify App Owner + Service Director with context",
+      "Track recovery window; rollback threshold in 30 mins"
+    ],
+    "batch": [
+      {
+        "name": "HXDOM1",
+        "state": "\u2705 Healthy"
+      },
+      {
+        "name": "BOOMI01",
+        "state": "\u274c Critical"
+      },
+      {
+        "name": "APP02",
+        "state": "\u26a0\ufe0f Warning"
+      },
+      {
+        "name": "DB01",
+        "state": "\u2705 Healthy"
+      }
+    ],
+    "toast": "\ud83d\udea8 Teams Alert sent: #AppSupport \u2014 BOOMI01 post-patch failure (evidence + next steps)",
+    "activity": [
+      "Composing context-rich alert\u2026",
+      "Adding evidence pack\u2026",
+      "Sending to Teams channel\u2026",
+      "Logging escalation\u2026"
+    ]
+  },
+  "optional": {
+    "title": "Optional: Interactive RCA",
+    "prompt": "Why is BOOMI01 failing?",
+    "status": {
+      "label": "RCA",
+      "color": "red",
+      "headline": "\u274c RCA Suggestion"
+    },
+    "checks": [
+      {
+        "label": "Signals",
+        "value": "service up + web down + startup warnings",
+        "icon": "\ud83d\udccc"
+      },
+      {
+        "label": "Likely causes",
+        "value": "dependency init timing (DB/file) after reboot",
+        "icon": "\u2022"
+      },
+      {
+        "label": "Likely causes",
+        "value": "stale mount/config mismatch",
+        "icon": "\u2022"
+      },
+      {
+        "label": "Likely causes",
+        "value": "container runtime readiness delay",
+        "icon": "\u2022"
+      },
+      {
+        "label": "Confidence",
+        "value": "Medium (assistive suggestion; human decides)",
+        "icon": "\ud83e\udde0"
+      }
+    ],
+    "recommendations": [
+      "Run app-specific smoke test (endpoint + DB connect)",
+      "Apply rollback threshold if recovery exceeds agreed window"
+    ],
+    "batch": [
+      {
+        "name": "BOOMI01",
+        "state": "\u274c Critical"
+      },
+      {
+        "name": "HXDOM1",
+        "state": "\u2705 Healthy"
+      },
+      {
+        "name": "APP02",
+        "state": "\u26a0\ufe0f Warning"
+      }
+    ],
+    "toast": null,
+    "activity": [
+      "Correlating evidence\u2026",
+      "Matching against known patterns\u2026",
+      "Producing RCA suggestions\u2026"
+    ]
+  }
+}

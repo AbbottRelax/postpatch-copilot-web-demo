@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Copilot Post-Patch Validation • Web Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">Copilot Post-Patch Validation</div>
+      <div class="subtitle">Web-based mockup demo • No real servers required</div>
+      <div class="actions">
+        <button class="btn ghost" id="btnReset">Reset</button>
+        <button class="btn" id="btnRun">Run Selected Scenario</button>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- Chat panel -->
+      <section class="panel chat">
+        <div class="panelTitle">Chat</div>
+
+        <div class="scenarioButtons">
+          <button class="chip" data-scn="part1">Part 1 • Healthy</button>
+          <button class="chip" data-scn="part2">Part 2 • App Failure</button>
+          <button class="chip" data-scn="part3">Part 3 • Network</button>
+          <button class="chip" data-scn="part4">Part 4 • Batch</button>
+          <button class="chip" data-scn="part5">Part 5 • Notify</button>
+          <button class="chip" data-scn="optional">Optional • Why Fail?</button>
+        </div>
+
+        <div class="chatWindow" id="chatWindow">
+          <div class="msg sys">Select a demo part above, then click “Run Selected Scenario”.</div>
+        </div>
+
+        <div class="chatInput">
+          <input id="chatText" type="text" placeholder="Type a prompt (demo only)…" />
+          <button class="btn" id="btnSend">Send</button>
+        </div>
+
+        <div class="hint">
+          Tip: Use prompts like “Check post-patch status for server HXDOM1” or “Why is BOOMI01 failing?”
+        </div>
+      </section>
+
+      <!-- Summary panel -->
+      <section class="panel summary">
+        <div class="panelHeader">
+          <div class="panelTitle">Post-Patch Validation Summary</div>
+          <div class="badge" id="badge">—</div>
+        </div>
+
+        <div class="headline" id="headline">Ready</div>
+
+        <div class="card">
+          <div class="cardTitle">Key Checks</div>
+          <div class="checklist" id="checklist"></div>
+        </div>
+
+        <div class="card">
+          <div class="cardTitle">Recommendation</div>
+          <ul class="recs" id="recs"></ul>
+        </div>
+
+        <div class="card">
+          <div class="cardTitle">Activity Log</div>
+          <div class="log" id="log"></div>
+        </div>
+      </section>
+
+      <!-- Batch panel -->
+      <section class="panel batch">
+        <div class="panelTitle">Batch Status (Parallel Validation)</div>
+        <div class="batchList" id="batchList"></div>
+
+        <div class="miniCard">
+          <div class="miniTitle">What this demo proves</div>
+          <ul>
+            <li>Automation of repetitive post-patch checks</li>
+            <li>AI interpretation: service-up ≠ app-healthy</li>
+            <li>Parallel validation to shorten patch windows</li>
+            <li>Context-rich notifications to owners</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

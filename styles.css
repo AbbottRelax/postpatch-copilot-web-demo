@@ -1,0 +1,82 @@
+/* Copilot-like web demo mockup (static) */
+:root{
+  --bg:#f5f7fa;
+  --panel:#ffffff;
+  --ink:#20375e;
+  --muted:#78828c;
+  --line:#dce1e6;
+  --blue:#4664a0;
+  --green:#009966;
+  --amber:#f5a623;
+  --red:#d0021b;
+  --chip:#eef3ff;
+  --chipInk:#20375e;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+.app{min-height:100vh;display:flex;flex-direction:column}
+.topbar{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--ink);color:#fff}
+.brand{font-weight:700;font-size:16px}
+.subtitle{opacity:.85;font-size:12px}
+.actions{display:flex;gap:10px}
+.btn{background:var(--blue);border:none;color:#fff;padding:9px 12px;border-radius:8px;font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.35)}
+.btn:hover{filter:brightness(.95)}
+
+.content{display:grid;grid-template-columns: 1.1fr 1.5fr 1.0fr;gap:14px;padding:14px;flex:1}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;min-height:0}
+.panelTitle{font-size:12px;color:var(--muted);font-weight:800;letter-spacing:.02em;margin-bottom:10px}
+
+/* chat */
+.scenarioButtons{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.chip{background:var(--chip);color:var(--chipInk);border:1px solid #d8e4ff;border-radius:999px;padding:6px 10px;font-weight:700;font-size:12px;cursor:pointer}
+.chip.active{outline:2px solid #9cb6ff}
+.chatWindow{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;flex:1;overflow:auto;min-height:220px}
+.msg{max-width:92%;padding:10px;border-radius:12px;margin:8px 0;font-size:13px;line-height:1.35}
+.msg.user{margin-left:auto;background:#e6f0ff;border:1px solid #cfe1ff}
+.msg.bot{margin-right:auto;background:#f2f7ff;border:1px solid #dbe7ff}
+.msg.sys{margin-right:auto;background:#f8fafc;border:1px dashed #d7dde3;color:var(--muted)}
+.chatInput{display:flex;gap:8px;margin-top:10px}
+.chatInput input{flex:1;padding:10px;border-radius:10px;border:1px solid var(--line)}
+.hint{margin-top:8px;font-size:12px;color:var(--muted)}
+
+/* summary */
+.panelHeader{display:flex;align-items:center;justify-content:space-between}
+.badge{font-size:12px;font-weight:800;padding:6px 10px;border-radius:999px;background:#eef2f7;color:var(--ink);border:1px solid var(--line)}
+.badge.green{background:#e6f7f0;border-color:#bfe8d6;color:var(--green)}
+.badge.amber{background:#fff4e5;border-color:#ffd9a8;color:var(--amber)}
+.badge.red{background:#ffe9ec;border-color:#ffb7c1;color:var(--red)}
+.badge.blue{background:#eef3ff;border-color:#d8e4ff;color:var(--blue)}
+.headline{font-size:20px;font-weight:800;margin:6px 0 12px 0}
+.card{background:#f8fafc;border:1px solid #e6ebf0;border-radius:12px;padding:10px;margin-bottom:10px}
+.cardTitle{font-size:12px;color:var(--muted);font-weight:800;margin-bottom:8px}
+.checklist{display:flex;flex-direction:column;gap:8px}
+.checkRow{display:flex;gap:10px;align-items:flex-start}
+.checkIcon{width:22px;text-align:center}
+.checkText{flex:1}
+.checkLabel{font-weight:800;font-size:13px}
+.checkVal{color:var(--muted);font-size:12px;margin-top:2px}
+.recs{margin:0;padding-left:18px;color:var(--ink)}
+.recs li{margin:6px 0;font-size:13px}
+.log{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:11px;color:var(--muted);white-space:pre-line}
+
+/* batch */
+.batchList{border:1px solid var(--line);border-radius:12px;overflow:auto;flex:1;min-height:220px}
+.row{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;border-bottom:1px solid #eef2f6;font-weight:700}
+.row:nth-child(even){background:#f8fafc}
+.state.ok{color:var(--green)}
+.state.warn{color:var(--amber)}
+.state.bad{color:var(--red)}
+
+.miniCard{margin-top:10px;background:#f8fafc;border:1px solid #e6ebf0;border-radius:12px;padding:10px;font-size:12px;color:var(--muted)}
+.miniTitle{font-weight:900;color:var(--ink);margin-bottom:6px}
+
+/* toast */
+.toast{position:fixed;right:18px;bottom:18px;max-width:420px;display:none;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.12);font-weight:800}
+.toast.show{display:block}
+.toast.red{border-color:#ffb7c1;background:#ffe9ec;color:var(--red)}
+.toast.amber{border-color:#ffd9a8;background:#fff4e5;color:var(--amber)}
+
+@media (max-width: 1100px){
+  .content{grid-template-columns:1fr;}
+}
