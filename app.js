@@ -1,3 +1,4 @@
+addMsg("bot", "Initializing parallel validation engine...");
 
 console.log("✅ app.js loaded");
 
