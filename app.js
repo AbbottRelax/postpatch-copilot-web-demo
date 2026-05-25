@@ -106,6 +106,7 @@ async function load() {
   }
 }
 
+
 async function runScenario() {
   const s = scenarios[selected];
   if (!s) return;
@@ -113,7 +114,7 @@ async function runScenario() {
   addMsg("user", s.prompt);
   addMsg("bot", "Running validation...");
 
-  // simulate delay (very important for UX)
+  // simulate delay
   await new Promise((r) => setTimeout(r, 800));
 
   // animate logs
@@ -123,11 +124,28 @@ async function runScenario() {
     await new Promise((r) => setTimeout(r, 300));
   }
 
-  // NOW update dashboard
+  // ✅ SPECIAL HANDLING FOR BATCH SCENARIO
+  if (selected === "part4") {
+    addMsg("bot", "Running batch validation across all servers...");
+
+    // Step 1: show intermediate state (DB01 still checking)
+    renderBatch([
+      { name: "HXDOM1", state: "✅ Healthy" },
+      { name: "APP03", state: "✅ Healthy" },
+      { name: "DB01", state: "⏳ Checking..." },
+      { name: "APP02", state: "⚠️ Warning" },
+      { name: "BOOMI01", state: "❌ Critical" }
+    ]);
+
+    await new Promise((r) => setTimeout(r, 1200));
+  }
+
+  // ✅ Final state
   renderScenario(selected);
 
-  addMsg("bot", "Validation completed.");
+  addMsg("bot", "✅ Validation completed.");
 }
+
 
 
 window.addEventListener("DOMContentLoaded", load);
