@@ -155,3 +155,68 @@ document.querySelectorAll(".chip").forEach((btn) => {
   });
 });
 
+
+document.getElementById("btnReset").addEventListener("click", function () {
+  // Clear chat
+  chatWindow.innerHTML = "";
+  addMsg("sys", "Select a demo part above, then click 'Run Selected Scenario'.");
+
+  // Reset dashboard
+  badge.className = "badge";
+  badge.textContent = "-";
+  headline.textContent = "Ready";
+  checklist.innerHTML = "";
+  recs.innerHTML = "";
+  logBox.textContent = "";
+  batchList.innerHTML = "";
+
+  // Clear toast
+  toast.className = "toast";
+  toast.textContent = "";
+
+  // Reset selection
+  selected = "part1";
+
+  console.log("✅ Reset triggered");
+});
+
+
+// ✅ SEND BUTTON
+document.getElementById("btnSend").addEventListener("click", sendUser);
+
+// ✅ ENTER KEY SUPPORT
+chatText.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    sendUser();
+  }
+});
+
+// ✅ USER INPUT FUNCTION
+function sendUser() {
+  const text = chatText.value.trim();
+  if (!text) return;
+
+  addMsg("user", text);
+  chatText.value = "";
+
+  const lower = text.toLowerCase();
+
+  if (lower.includes("hxdom1")) {
+    selected = "part1";
+  } else if (lower.includes("boomi01") && lower.includes("why")) {
+    selected = "optional";
+  } else if (lower.includes("boomi01")) {
+    selected = "part2";
+  } else if (lower.includes("app02")) {
+    selected = "part3";
+  } else if (lower.includes("overall")) {
+    selected = "part4";
+  } else if (lower.includes("alert")) {
+    selected = "part5";
+  }
+
+  addMsg("bot", "✅ Request understood. Click 'Run Selected Scenario'.");
+}
+
+
+
