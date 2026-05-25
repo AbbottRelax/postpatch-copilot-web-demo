@@ -106,15 +106,29 @@ async function load() {
   }
 }
 
-function runScenario() {
+async function runScenario() {
   const s = scenarios[selected];
   if (!s) return;
 
   addMsg("user", s.prompt);
   addMsg("bot", "Running validation...");
 
+  // simulate delay (very important for UX)
+  await new Promise((r) => setTimeout(r, 800));
+
+  // animate logs
+  logBox.textContent = "";
+  for (const line of s.activity) {
+    logBox.textContent += "• " + line + "\n";
+    await new Promise((r) => setTimeout(r, 300));
+  }
+
+  // NOW update dashboard
   renderScenario(selected);
+
+  addMsg("bot", "Validation completed.");
 }
+
 
 window.addEventListener("DOMContentLoaded", load);
 
