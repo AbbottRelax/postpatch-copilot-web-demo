@@ -123,7 +123,21 @@ document.getElementById("btnRun").addEventListener("click", runScenario);
 document.querySelectorAll(".chip").forEach((btn) => {
   btn.addEventListener("click", () => {
     selected = btn.dataset.scn;
-    renderScenario(selected);
+    
+document.querySelectorAll(".chip").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    selected = btn.dataset.scn;
+
+    // ONLY highlight selection (no dashboard update)
+    document.querySelectorAll(".chip").forEach((b) =>
+      b.classList.remove("active")
+    );
+    btn.classList.add("active");
+
+    addMsg("sys", "Scenario selected. Click 'Run Selected Scenario'.");
+  });
+});
+
   });
 });
 
