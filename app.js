@@ -118,6 +118,30 @@ function runScenario() {
 
 window.addEventListener("DOMContentLoaded", load);
 
+
+document.getElementById("btnReset").addEventListener("click", () => {
+  // Clear chat
+  chatWindow.innerHTML = "";
+  addMsg("sys", "Select a demo part above, then click 'Run Selected Scenario'.");
+
+  // Reset dashboard
+  badge.className = "badge";
+  badge.textContent = "-";
+  headline.textContent = "Ready";
+  checklist.innerHTML = "";
+  recs.innerHTML = "";
+  logBox.textContent = "";
+  batchList.innerHTML = "";
+
+  // Clear toast
+  toast.className = "toast";
+  toast.textContent = "";
+
+  // Reset selection
+  selected = "part1";
+});
+
+
 document.getElementById("btnRun").addEventListener("click", runScenario);
 
 document.querySelectorAll(".chip").forEach((btn) => {
