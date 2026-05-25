@@ -1,4 +1,7 @@
 // Copilot Post-Patch Validation • Web demo (static mock)
+
+console.log("app.js loaded");
+
 let scenarios = {};
 let selected = 'part1';
 
@@ -114,7 +117,7 @@ function renderScenario(key){
   renderBatch(s.batch);
 
   // toast
-  setToast(s.toast, s.status.color === 'red' ? 'red' : (s.status.color === 'amber' ? 'amber' : ''));
+ // setToast(s.toast, s.status.color === "red" ? "red" : (s.status.color === "amber" ? "amber" : ""));
 
   // log
   logBox.textContent = s.activity.map(x=>`• ${x}`).join('
@@ -128,7 +131,7 @@ function highlightChip(){
 }
 
 async function load(){
-  const res = await fetch('./data/scenarios.json');
+  const res = await fetch('data/scenarios.json');
   scenarios = await res.json();
   renderScenario(selected);
   highlightChip();
@@ -140,7 +143,7 @@ async function runScenario(){
   if(!s) return;
 
   addMsg('user', s.prompt);
-  addMsg('bot', 'Running post-patch checks…');
+  addMsg('bot', 'Running post-patch checks...');
 
   // animate log line by line
   logBox.textContent = '';
@@ -170,7 +173,7 @@ function sendUser(){
   else if(lower.includes('send') && lower.includes('alert')) selected='part5';
 
   highlightChip();
-  addMsg('bot', 'Got it. Click “Run Selected Scenario” to simulate the checks.');
+  addMsg('bot', 'Got it. Click "Run Selected Scenario" to simulate the checks.');
 }
 
 // events
@@ -178,7 +181,7 @@ window.addEventListener('DOMContentLoaded', load);
 qs('btnRun').addEventListener('click', runScenario);
 qs('btnSend').addEventListener('click', sendUser);
 chatText.addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendUser(); });
-qs('btnReset').addEventListener('click', ()=>{ chatWindow.innerHTML=''; addMsg('sys','Select a demo part above, then click “Run Selected Scenario”.'); renderScenario(selected); });
+qs('btnReset').addEventListener('click', ()=>{ chatWindow.innerHTML=''; addMsg('sys','Select a demo part above, then click "Run Selected Scenario".'); renderScenario(selected); });
 
 document.querySelectorAll('.chip').forEach(btn=>{
   btn.addEventListener('click', ()=>{
