@@ -238,6 +238,4 @@ async function sendUser() {
   } else {
     addMsg("bot", "❓ Sorry, I don’t recognize this request in the demo.");
     return;
-  }
-
   });
