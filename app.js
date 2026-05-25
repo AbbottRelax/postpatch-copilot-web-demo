@@ -126,3 +126,4 @@ document.querySelectorAll(".chip").forEach((btn) => {
     renderScenario(selected);
   });
 });
+
