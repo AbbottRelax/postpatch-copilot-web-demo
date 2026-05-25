@@ -239,3 +239,5 @@ async function sendUser() {
     addMsg("bot", "❓ Sorry, I don’t recognize this request in the demo.");
     return;
   }
+
+  });
