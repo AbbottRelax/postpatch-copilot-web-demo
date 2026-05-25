@@ -1,4 +1,5 @@
-console.log("✅ app.js loaded");
+
+console.log("app.js loaded");
 
 let scenarios = {};
 let selected = "part1";
@@ -15,6 +16,7 @@ const logBox = qs("log");
 const batchList = qs("batchList");
 const toast = qs("toast");
 
+// ---------- UI helpers ----------
 function addMsg(type, text) {
   const div = document.createElement("div");
   div.className = "msg " + type;
@@ -31,8 +33,7 @@ function clearUI() {
   recs.innerHTML = "";
   logBox.textContent = "";
   batchList.innerHTML = "";
-  toast.className = "toast";
-  toast.textContent = "";
+  hideToast();
 }
 
 function setBadge(color, label) {
@@ -40,15 +41,26 @@ function setBadge(color, label) {
   badge.textContent = label;
 }
 
-function setToast(message, color) {
+function showToast(message, color) {
   if (!message) return;
   toast.textContent = message;
-  toast.className = "toast show " + color;
+  toast.className = "toast show " + (color || "");
 }
 
+function hideToast() {
+  toast.textContent = "";
+  toast.className = "toast";
+}
+
+function highlightSelectedChip() {
+  document.querySelectorAll(".chip").forEach((b) => b.classList.remove("active"));
+  const active = document.querySelector(`.chip[data-scn="${selected}"]`);
+  if (active) active.classList.add("active");
+}
+
+// ---------- Rendering ----------
 function renderBatch(items) {
   batchList.innerHTML = "";
-
   items.forEach((it) => {
     const row = document.createElement("div");
     row.className = "row";
@@ -69,56 +81,74 @@ function renderScenario(key) {
   const s = scenarios[key];
   if (!s) return;
 
-  clearUI();
+  // reset dashboard areas (but do not wipe chat)
+  badge.className = "badge";
+  badge.textContent = "-";
+  checklist.innerHTML = "";
+  recs.innerHTML = "";
+  logBox.textContent = "";
+  hideToast();
 
   headline.textContent = s.status.headline;
   setBadge(s.status.color, s.status.label);
 
+  // checks list
   s.checks.forEach((c) => {
     const div = document.createElement("div");
     div.textContent = c.icon + " " + c.label + " - " + c.value;
     checklist.appendChild(div);
   });
 
+  // recs
   s.recommendations.forEach((r) => {
     const li = document.createElement("li");
     li.textContent = r;
     recs.appendChild(li);
   });
 
+  // batch list
   renderBatch(s.batch);
 
+  // toast
   if (s.toast) {
-    setToast(s.toast, s.status.color === "red" ? "red" : "amber");
+    const toastColor =
+      s.status.color === "red" ? "red" : (s.status.color === "amber" ? "amber" : "");
+    showToast(s.toast, toastColor);
   }
 
-  logBox.textContent = s.activity.join("\\n");
+  // activity log (static snapshot)
+  logBox.textContent = s.activity.map((x) => "• " + x).join("\n");
 }
 
+// ---------- Data load ----------
 async function load() {
   try {
     const res = await fetch("data/scenarios.json");
     scenarios = await res.json();
-    renderScenario(selected);
+
+    clearUI();
+    chatWindow.innerHTML = "";
+    addMsg("sys", "Select a demo part above, or type a keyword on the left and press Send.");
+    highlightSelectedChip();
   } catch (err) {
-    console.error("Error loading JSON:", err);
+    console.error("Error loading scenarios.json:", err);
+    addMsg("sys", "ERROR: cannot load scenarios.json. Check path: data/scenarios.json");
   }
 }
 
-
-
-async function runScenario() {
+// ---------- Scenario execution ----------
+async function runScenario(options = {}) {
   const s = scenarios[selected];
   if (!s) return;
 
-  addMsg("user", s.prompt);
-  
-  addMsg("bot", "Initializing parallel validation engine...");
-  addMsg("bot", "Analyzing your request...");
-  addMsg("bot", "Running validation...");
+  // If Send already added the user message, skip duplicating it
+  if (!options.skipUserMsg) {
+    addMsg("user", s.prompt);
+  }
 
-  // simulate delay
-  await new Promise((r) => setTimeout(r, 800));
+  addMsg("bot", "Analyzing request...");
+  await new Promise((r) => setTimeout(r, 500));
+  addMsg("bot", "Running validation...");
 
   // animate logs
   logBox.textContent = "";
@@ -127,11 +157,11 @@ async function runScenario() {
     await new Promise((r) => setTimeout(r, 300));
   }
 
-  // ✅ SPECIAL HANDLING FOR BATCH SCENARIO
+  // Part 4: Overall Summary progress step (visible transition)
   if (selected === "part4") {
-    addMsg("bot", "Running batch validation across all servers...");
+    addMsg("bot", "Running overall validation across remaining systems...");
 
-    // Step 1: show intermediate state (DB01 still checking)
+    // Step 1: intermediate view (DB01 checking)
     renderBatch([
       { name: "HXDOM1", state: "✅ Healthy" },
       { name: "APP03", state: "✅ Healthy" },
@@ -140,80 +170,17 @@ async function runScenario() {
       { name: "BOOMI01", state: "❌ Critical" }
     ]);
 
-    await new Promise((r) => setTimeout(r, 1200));
+    await new Promise((r) => setTimeout(r, 2000)); // slower so human can see
+    addMsg("bot", "DB01 validation completed.");
   }
 
-  // ✅ Final state
+  // Final render (authoritative scenario state)
   renderScenario(selected);
 
-  addMsg("bot", "✅ Validation completed.");
+  addMsg("bot", "Validation completed.");
 }
 
-
-
-window.addEventListener("DOMContentLoaded", load);
-
-document.getElementById("btnRun").addEventListener("click", runScenario);
-
-document.querySelectorAll(".chip").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    selected = btn.dataset.scn;
-    
-document.querySelectorAll(".chip").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    selected = btn.dataset.scn;
-
-    // ONLY highlight selection (no dashboard update)
-    document.querySelectorAll(".chip").forEach((b) =>
-      b.classList.remove("active")
-    );
-    btn.classList.add("active");
-
-    addMsg("sys", "Scenario selected. Click 'Run Selected Scenario'.");
-  });
-});
-
-  });
-});
-
-
-document.getElementById("btnReset").addEventListener("click", function () {
-  // Clear chat
-  chatWindow.innerHTML = "";
-  addMsg("sys", "Select a demo part above, then click 'Run Selected Scenario'.");
-
-  // Reset dashboard
-  badge.className = "badge";
-  badge.textContent = "-";
-  headline.textContent = "Ready";
-  checklist.innerHTML = "";
-  recs.innerHTML = "";
-  logBox.textContent = "";
-  batchList.innerHTML = "";
-
-  // Clear toast
-  toast.className = "toast";
-  toast.textContent = "";
-
-  // Reset selection
-  selected = "part1";
-
-  console.log("✅ Reset triggered");
-});
-
-
-// ✅ SEND BUTTON
-document.getElementById("btnSend").addEventListener("click", sendUser);
-
-// ✅ ENTER KEY SUPPORT
-chatText.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") {
-    sendUser();
-  }
-});
-
-// ✅ USER INPUT FUNCTION
-
+// ---------- Send behavior (keyword -> scenario -> auto-run) ----------
 async function sendUser() {
   const text = chatText.value.trim();
   if (!text) return;
@@ -223,19 +190,53 @@ async function sendUser() {
 
   const lower = text.toLowerCase();
 
+  // Keyword mapping (extend anytime)
   if (lower.includes("hxdom1")) {
     selected = "part1";
   } else if (lower.includes("boomi01") && lower.includes("why")) {
     selected = "optional";
   } else if (lower.includes("boomi01")) {
     selected = "part2";
-  } else if (lower.includes("app02")) {
+  } else if (lower.includes("app02") && lower.includes("network")) {
     selected = "part3";
   } else if (lower.includes("overall")) {
     selected = "part4";
-  } else if (lower.includes("alert") || lower.includes("notify")) {
+  } else if (lower.includes("notify") || lower.includes("alert")) {
     selected = "part5";
   } else {
-    addMsg("bot", "❓ Sorry, I don’t recognize this request in the demo.");
+    addMsg("bot", "Sorry—demo keywords: HXDOM1, BOOMI01, APP02 network, overall, notify/alert, why BOOMI01.");
     return;
-  };
+  }
+
+  highlightSelectedChip();
+  await runScenario({ skipUserMsg: true });
+}
+
+// ---------- Event bindings ----------
+window.addEventListener("DOMContentLoaded", load);
+
+qs("btnRun").addEventListener("click", () => runScenario());
+
+qs("btnReset").addEventListener("click", () => {
+  // reset everything
+  selected = "part1";
+  clearUI();
+  chatWindow.innerHTML = "";
+  addMsg("sys", "Reset done. Select a demo part above, or type a keyword and press Send.");
+  highlightSelectedChip();
+  console.log("Reset triggered");
+});
+
+qs("btnSend").addEventListener("click", sendUser);
+
+chatText.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") sendUser();
+});
+
+document.querySelectorAll(".chip").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    selected = btn.dataset.scn;
+    highlightSelectedChip();
+    addMsg("sys", "Scenario selected. Click 'Run Selected Scenario' (or type keywords and Send).");
+  });
+});
