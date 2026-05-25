@@ -117,7 +117,18 @@ function renderScenario(key){
   renderBatch(s.batch);
 
   // toast
-setToast(s.toast, s.status.color === "red" ? "red" : (s.status.color === "amber" ? "amber" : ""));
+//setToast(s.toast, s.status.color === "red" ? "red" : (s.status.color === "amber" ? "amber" : ""));
+
+let color = "";
+
+if (s.status.color === "red") {
+  color = "red";
+} else if (s.status.color === "amber") {
+  color = "amber";
+}
+
+setToast(s.toast, color);
+
 
   // log
   logBox.textContent = s.activity.map(x=>`• ${x}`).join('
