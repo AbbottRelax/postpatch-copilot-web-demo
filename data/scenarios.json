@@ -203,12 +203,12 @@
     ]
   },
   "part4": {
-    "title": "Demo Part 4: Batch Summary (Parallel)",
+    "title": "Demo Part 4: Overall Summary (Parallel)",
     "prompt": "Show overall patch validation status",
     "status": {
-      "label": "BATCH",
+      "label": "Overall",
       "color": "blue",
-      "headline": "\u2705 Batch Summary"
+      "headline": "\u2705 Overall Summary"
     },
     "checks": [
       {

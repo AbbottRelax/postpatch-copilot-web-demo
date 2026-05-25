@@ -1,5 +1,3 @@
-addMsg("bot", "Initializing parallel validation engine...");
-
 console.log("✅ app.js loaded");
 
 let scenarios = {};
@@ -108,11 +106,15 @@ async function load() {
 }
 
 
+
 async function runScenario() {
   const s = scenarios[selected];
   if (!s) return;
 
   addMsg("user", s.prompt);
+  
+  addMsg("bot", "Initializing parallel validation engine...");
+  addMsg("bot", "Analyzing your request...");
   addMsg("bot", "Running validation...");
 
   // simulate delay
@@ -211,7 +213,8 @@ chatText.addEventListener("keydown", function (e) {
 });
 
 // ✅ USER INPUT FUNCTION
-function sendUser() {
+
+async function sendUser() {
   const text = chatText.value.trim();
   if (!text) return;
 
@@ -230,12 +233,13 @@ function sendUser() {
     selected = "part3";
   } else if (lower.includes("overall")) {
     selected = "part4";
-  } else if (lower.includes("alert")) {
+  } else if (lower.includes("alert") || lower.includes("notify")) {
     selected = "part5";
+  } else {
+    addMsg("bot", "❓ Sorry, I don’t recognize this request in the demo.");
+    return;
   }
 
-  addMsg("bot", "✅ Request understood. Click 'Run Selected Scenario'.");
-}
 
 
 
